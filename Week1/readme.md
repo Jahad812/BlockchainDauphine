@@ -1,5 +1,5 @@
 # EX 1 - Part A
-own is 131506461761462800 Wei, but it may be incorrect due to floating-point precision issues in JavaScript. Since JavaScript uses 64-bit floating-point numbers, large integers like Wei can lose precision when converted, leading to potential discrepancies.
+Account has 131506461761462800 Wei, but it may be incorrect due to floating-point precision issues in JavaScript. Since JavaScript uses 64-bit floating-point numbers, large integers like Wei can lose precision when converted, leading to potential discrepancies.
 
 ---
 
