@@ -7,6 +7,6 @@ Then I used abi.encodePacked, and I got 69 bytes.
 abi.encodePacked does not align or pad data. Elements are concatenated tightly, with no extra zeros added.
 
 
-# EX 1 Part B 
+# EX 2 Part B 
 ## SPDX Initiative 
 
