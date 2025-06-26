@@ -1,0 +1,40 @@
+Dim temp_wkb As Workbook
+Dim temp_path As String
+Dim esg_ws As Worksheet
+
+' Open ESG file temporarily
+Set esg_wkb = Workbooks.Open(esg_file)
+Set esg_ws = esg_wkb.Sheets("raw_data") ' Adjust sheet name if different
+
+' Apply autofilter on relevant columns
+With esg_ws
+    .AutoFilterMode = False
+    .Rows(1).AutoFilter Field:=1, Criteria1:=ptf_code      ' Assuming PTF_CODE is in Column A (Field 1)
+    .Rows(1).AutoFilter Field:=2, Criteria1:=univers_name  ' Assuming Nom ptf is in Column B (Field 2)
+    
+    ' Copy visible filtered data to a new workbook
+    .UsedRange.SpecialCells(xlCellTypeVisible).Copy
+End With
+
+' Create a temporary workbook and paste the filtered data
+Set temp_wkb = Workbooks.Add
+temp_wkb.Sheets(1).Range("A1").PasteSpecial Paste:=xlPasteValues
+Application.CutCopyMode = False
+
+' Save the filtered data as a temporary file
+temp_path = Environ("TEMP") & "\filtered_esg_data.xlsx"
+temp_wkb.SaveAs Filename:=temp_path, FileFormat:=xlOpenXMLWorkbook
+temp_wkb.Close SaveChanges:=False
+
+' Close original ESG file without saving
+esg_wkb.Close SaveChanges:=False
+
+' Assign the filtered temp file path to esg_file
+esg_file = temp_path
+
+' Now continue with your existing loading logic
+Call load_table("Connexion_ptf", ptf, esg_file)
+Call load_table("Connexion_u", bmk, univers_file)
+
+' Return to original workbook
+current_wkb.Activate
